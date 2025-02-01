@@ -1,0 +1,33 @@
+﻿@model ProfileUserFromViewModel
+<h1>User</h1>
+<form id="registerForm" asp-action="Edit" method="post">
+    <input asp-for="Id" type="hidden"/>
+    <h2>Edit User Profile</h2>
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+    <div class="form-floating mb-3">
+        <input asp-for="FirstName" class="form-control" autocomplete="username" aria-required="true" placeholder="name@examplecom" />
+        <label asp-for="FirstName">First Name</label>
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="LastName" class="form-control" autocomplete="username" aria-required="true" placeholder="name@examplecom" />
+        <label asp-for="LastName">Last Name</label>
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="UserName" class="form-control" autocomplete="username" aria-required="true" placeholder="name@examplecom" />
+        <label asp-for="UserName">User Name</label>
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@examplecom" />
+        <label asp-for="Email">Email</label>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+   
+    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

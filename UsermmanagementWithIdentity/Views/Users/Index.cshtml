@@ -1,0 +1,88 @@
+﻿@model IEnumerable<UserViewModel>
+<h1>Users</h1>
+<a class="btn btn-primary mt-4 mb-4" asp-action="AddUser">Add New User</a>
+<table class="table table-striped">
+    <thead class="bg-primary text-white">
+        <tr>
+            
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var user in Model)
+        {
+            <tr>
+                
+                <td>@user.FirstName</td>
+                <td>@user.LastName</td>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@string.Join(" ,",user.Roles)</td>
+                <td>
+                    <a asp-action="ManageUserRole" asp-route-userId="@user.Id" class="btn btn-primary">Roles</a>
+                    <a asp-action="Edit" asp-route-userId="@user.Id" class="btn btn-outline-primary">Profile</a>
+                    <a onclick="deleteItem('@user.Id')" class="btn btn-danger">Delete</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function deleteItem(id) {
+            // Show confirmation dialog with SweetAlert
+            console.log("enter");
+            Swal.fire({
+                title: 'Do you want to delete this user?',
+                text: "This action cannot be undone.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Call the delete action via AJAX
+                    $.ajax({
+                        url: '@Url.Action("DeleteUser", "Users")',
+                        type: 'POST',
+                        data: { userId: id },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire(
+                                    'Deletion successful!',
+                                    response.message,
+                                    'success'
+                                ).then(() => {
+                                    // Dynamically remove the deleted item from the DOM
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Error!',
+                                    response.message,
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function (xhr) {
+                            console.error(xhr.responseText); // Log detailed error
+                            Swal.fire(
+                                'Error!',
+                                'An error occurred while deleting the user.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}
