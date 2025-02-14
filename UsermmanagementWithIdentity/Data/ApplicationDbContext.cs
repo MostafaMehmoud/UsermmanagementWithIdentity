@@ -11,7 +11,8 @@ namespace UsermmanagementWithIdentity.Data
             : base(options)
         {
         }
-
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }    
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -41,6 +42,9 @@ namespace UsermmanagementWithIdentity.Data
 
             builder.Entity<IdentityUserToken<string>>()
                 .HasKey(token => new { token.UserId, token.LoginProvider, token.Name });
+            builder.Entity<Invoice>()
+                .HasIndex(i => i.Code)
+                .IsUnique();
         }
     }
 }

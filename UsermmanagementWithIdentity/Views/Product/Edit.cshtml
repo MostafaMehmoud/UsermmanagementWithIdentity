@@ -1,0 +1,23 @@
+﻿@model Product
+<h1>Product</h1>
+<form id="registerForm" asp-action="Edit" method="post">
+    <h2>Edit product.</h2>
+    <input asp-for="Id" type="hidden"/>
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+    <div class="form-floating mb-3">
+        <input asp-for="ProductName" class="form-control" aria-required="true" placeholder="enter product name" />
+        <label asp-for="ProductName">product Name</label>
+        <span asp-validation-for="ProductName" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="Price" class="form-control" aria-required="true" placeholder="enter product price" />
+        <label asp-for="Price">Price</label>
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Edit</button>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

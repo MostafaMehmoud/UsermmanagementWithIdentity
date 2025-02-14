@@ -1,0 +1,91 @@
+﻿@model Invoice
+<h1>Invoice</h1>
+<form id="registerForm" asp-action="Add" method="post">
+    <h2>Create a new Invoice.</h2>
+    <hr />
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+    <div class="form-floating mb-3">
+        <input id="codeInput" asp-for="Code" class="form-control" aria-required="true" placeholder="Enter Code" readonly />
+        <label asp-for="Code">Code</label>
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input asp-for="CustomerName" class="form-control" aria-required="true" placeholder="enter Customer Name" />
+        <label asp-for="CustomerName">Customer Name</label>
+        <span asp-validation-for="CustomerName" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <input asp-for="DateOfRegistration" type="date" class="form-control" aria-required="true" placeholder="enter Date Of Registration" />
+        <label asp-for="DateOfRegistration"> Date Of Registration</label>
+        <span asp-validation-for="DateOfRegistration" class="text-danger"></span>
+    </div>
+    <div class="form-floating mb-3">
+        <select id="productDropdown" class="form-control" asp-items="ViewBag.listProduct">
+            <option value="">Select Product</option>
+        </select>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input id="productName" asp-for="ProductName" class="form-control" aria-required="true" placeholder="Enter Product Name" readonly />
+        <label asp-for="ProductName">Product Name</label>
+        <span asp-validation-for="ProductName" class="text-danger"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input id="productPrice" asp-for="Price" class="form-control" type="number" aria-required="true" placeholder="Enter Price"  />
+        <label asp-for="Price">Product Price</label>
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#productDropdown").change(function () {
+                var productId = $(this).val();
+
+                if (productId) {
+                    $.ajax({
+                        url: '@Url.Action("GetProductDetails", "Invoice")', // Adjust controller name if needed
+                        type: "GET",
+                        data: { id: productId },
+                        success: function (response) {
+                            if (response) {
+                                $("#productName").val(response.name);
+                                $("#productPrice").val(response.price);
+                            }
+                        },
+                        error: function () {
+                            alert("Error loading product details.");
+                        }
+                    });
+                } else {
+                    // Clear the fields if no product is selected
+                    $("#productName").val("");
+                    $("#productPrice").val("");
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '@Url.Action("GenerateNewCode", "Invoice")', // Adjust the controller name
+                type: "GET",
+                success: function (response) {
+                    if (response) {
+                        $("#codeInput").val(response.code); // Set the new code
+                    }
+                },
+                error: function () {
+                    alert("Error generating code.");
+                }
+            });
+        });
+    </script>
+}

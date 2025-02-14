@@ -1,0 +1,38 @@
+﻿@model Invoice
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice Print</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h2 { text-align: center; }
+        .invoice-container { max-width: 800px; margin: auto; padding: 20px; border: 1px solid #ddd; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        .btn-print { display: block; margin: 20px auto; padding: 10px; background: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <h2>Invoice Details</h2>
+        <p><strong>Invoice Code:</strong> @Model.Code</p>
+        <p><strong>Customer Name:</strong> @Model.CustomerName</p>
+        <p><strong>Creation Date:</strong> @Model.DateOfCreation.ToString("yyyy-MM-dd")</p>
+        <p><strong>Registration Date:</strong> @Model.DateOfRegistration.ToString("yyyy-MM-dd")</p>
+
+        <h3>Product Details</h3>
+        <table>
+            <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+            </tr>
+            <tr>
+                <td>@Model.ProductName</td>
+                <td>@Model.Price</td>
+            </tr>
+        </table>
+
+        <button class="btn-print" onclick="window.print()">Print Invoice</button>
+    </div>
+</body>
+</html>
